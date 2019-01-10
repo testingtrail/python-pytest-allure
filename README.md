@@ -12,7 +12,7 @@ This is a project for a web automation framework using Selenium, Python, allure 
 # How to run it
 enter the following command in cmd being located in the folder path
   - python -m pytest 
-Optional parameters
+* Optional parameters
   - --html=reports/report1.html For reporting
   - --self-contained-html For having report with inline CSS
   - --browser <firefox, chrome> To choose different browser, default is chrome
