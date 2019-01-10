@@ -8,14 +8,20 @@ This is a project for a web automation framework using Selenium, Python, allure 
   - pip install selenium
   - pip install pytest
   - pip install pytest-html
+  - pip install allure-pytest
 
 # How to run it
 enter the following command in cmd being located in the folder path
   - python -m pytest 
 * Optional parameters
-  - --html=reports/report1.html For reporting
-  - --self-contained-html For having report with inline CSS
+  - --html=reports/report1.html For Pytest html reporting
+  - --self-contained-html For having Pytest html report with inline CSS
   - --browser <firefox, chrome> To choose different browser, default is chrome
+  - --alluredir=<path> To create files needed for allure reports, run this every time your code changes
+    or new funtionality exists, in this case "alluredir=reports/allure-reports"
+* To generate allure reports you need to type the following in the project path
+  - allure serve <path where allure files are>
+   
 
 # Technologies used
 * Python 3.

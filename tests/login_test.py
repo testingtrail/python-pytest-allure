@@ -20,11 +20,25 @@ class TestLogin():
         login.click_login()
 
     def test_logout(self):
-        driver = self.driver
-        homepage = HomePage(driver)
-        homepage.click_welcome()
-        homepage.click_logout()
-
+        try:
+            driver = self.driver
+            homepage = HomePage(driver)
+            homepage.click_welcome()
+            homepage.click_logout()
+            x = driver.title
+            assert x == "OrangeHRM"
+        except AssertionError as error:
+            print("Assertion error occurred")
+            print(error)
+            raise
+        except:
+            print("There was an exception")
+            #the raise is to show it as a failure
+            raise
+        else:
+            print("No exceptions occurred")
+        finally:
+            print("Inside finally block")
 
 
 
