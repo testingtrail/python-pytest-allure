@@ -1,12 +1,17 @@
 from selenium import webdriver
 import pytest
 
+from pages.loginPage import LoginPage
+from pages.homePage import HomePage
+from utils import utils as environment
+
+
 class TestLogin():
 
     @pytest.fixture(scope="class")
     def test_setup(self):
         global driver
-        driver = webdriver.Chrome(executable_path="../drivers/chromedriver.exe")
+        driver = webdriver.Chrome(executable_path= "C:/Users/jorge/Desktop/Work/Code/Mine/Python/AutomationFramework_1/drivers/chromedriver.exe")
         driver.implicitly_wait(5)
         driver.maximize_window()
         yield
@@ -15,14 +20,18 @@ class TestLogin():
         print("Test completed.")
 
     def test_login(self, test_setup):
-        driver.get("https://opensource-demo.orangehrmlive.com/")
-        driver.find_element_by_id("txtUsername").send_keys("Admin")
-        driver.find_element_by_id("txtPassword").send_keys("admin123")
-        driver.find_element_by_id("btnLogin").click()
+        driver.get(environment.URL)
+
+        login = LoginPage(driver)
+        login.enter_username(environment.USERNAME)
+        login.enter_password(environment.PASSWORD)
+        login.click_login()
 
     def test_logout(self, test_setup):
-        driver.find_element_by_id("welcome").click()
-        driver.find_element_by_link_text("Logout").click()
+        homepage = HomePage(driver)
+        homepage.click_welcome()
+        homepage.click_logout()
+
 
 
 

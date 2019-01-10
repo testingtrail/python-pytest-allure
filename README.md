@@ -8,6 +8,9 @@ This is a project for a web automation framework using Selenium, Python, allure 
   - pip install selenium.
   - pip install pytest.
 
+# How to run it
+enter the following command in cmd being located in the folder path: python -m pytest
+
 # Technologies used
 * Python 3.
 * Selenium Package.
