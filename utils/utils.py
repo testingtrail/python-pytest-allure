@@ -2,4 +2,4 @@
 
 URL = "https://opensource-demo.orangehrmlive.com/"
 USERNAME = "Admin"
-PASSWORD = "Admin123"
+PASSWORD = "admin123"

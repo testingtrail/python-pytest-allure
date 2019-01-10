@@ -5,11 +5,17 @@ This is a project for a web automation framework using Selenium, Python, allure 
 * Make sure you have python installed on your machine by typing in console "python --version" if not go to https://realpython.com/installing-python/#step-1-download-the-python-3-installer.
 * Clone the repository to any local path.
 * Note: This has been created using Python environment in order to have all dependencies in the same folder rather than taking the packages for the global python configuration. If you wish to clone without env folder you have to download following python packages by running following pip commands:
-  - pip install selenium.
-  - pip install pytest.
+  - pip install selenium
+  - pip install pytest
+  - pip install pytest-html
 
 # How to run it
-enter the following command in cmd being located in the folder path: python -m pytest
+enter the following command in cmd being located in the folder path
+  - python -m pytest 
+Optional parameters
+  - --html=reports/report1.html For reporting
+  - --self-contained-html For having report with inline CSS
+  - --browser <firefox, chrome> To choose different browser, default is chrome
 
 # Technologies used
 * Python 3.
