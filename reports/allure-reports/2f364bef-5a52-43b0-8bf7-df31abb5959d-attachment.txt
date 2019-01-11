@@ -1,0 +1,8 @@
+Assertion error occurred
+assert 'OrangeHRM' == 'abc'
+  - OrangeHRM
+  + abc
+test_logout_screenshot_11-01-2019_11:04:39
+C:/Users/jorge/Desktop/Work/Code/Mine/Python/AutomationFramework_1/screenshots/test_logout_screenshot_11-01-2019_11:04:39.png
+Inside finally block
+Test completed.
