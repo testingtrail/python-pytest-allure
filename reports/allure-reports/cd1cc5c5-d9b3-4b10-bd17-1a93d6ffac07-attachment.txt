@@ -1,7 +1,0 @@
-Assertion error occurred
-assert 'OrangeHRM' == 'abc'
-  - OrangeHRM
-  + abc
-test_logout_screenshot_11-01-2019_11:11:37
-Inside finally block
-Test completed.

@@ -1,2 +1,0 @@
-There was an exception
-Test completed.
