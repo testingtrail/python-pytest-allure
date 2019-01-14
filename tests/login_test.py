@@ -7,10 +7,6 @@ from pages.loginPage import LoginPage
 from pages.homePage import HomePage
 from utils import utils as environment
 
-import sys, os
-myPath = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, myPath + '/../')
-
 #to link the setup in conftest.py
 @pytest.mark.usefixtures("test_setup")
 
