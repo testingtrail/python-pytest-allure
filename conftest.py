@@ -14,13 +14,13 @@ def test_setup(request):
     browser = request.config.getoption("--browser")
     if browser == "chrome":
         driver = webdriver.Chrome(
-            executable_path= "C:/Users/jorge/Desktop/Work/Code/Mine/Python/AutomationFramework_1/drivers/chromedriver.exe")
+            executable_path= "C:/Users/jorge/Desktop/Work/Code/Mine/Python/PythonAutomationFramework/drivers/chromedriver.exe")
     elif browser == "firefox":
         driver = webdriver.Firefox(
-            executable_path="C:/Users/jorge/Desktop/Work/Code/Mine/Python/AutomationFramework_1/drivers/geckodriver.exe")
+            executable_path="C:/Users/jorge/Desktop/Work/Code/Mine/Python/PythonAutomationFramework/drivers/geckodriver.exe")
     else:
         driver = webdriver.Chrome(
-            executable_path="C:/Users/jorge/Desktop/Work/Code/Mine/Python/AutomationFramework_1/drivers/chromedriver.exe")
+            executable_path="C:/Users/jorge/Desktop/Work/Code/Mine/Python/PythonAutomationFramework/drivers/chromedriver.exe")
     driver.implicitly_wait(5)
     driver.maximize_window()
     #next line will sent the driver variable to the class

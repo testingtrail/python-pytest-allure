@@ -39,7 +39,7 @@ class TestLogin():
             allure.attach(driver.get_screenshot_as_png(),name=screenshotName,
                           attachment_type=allure.attachment_type.PNG)
             #to get the file on specific path
-            driver.get_screenshot_as_file("C:/Users/jorge/Desktop/Work/Code/Mine/Python/AutomationFramework_1/screenshots/"+
+            driver.get_screenshot_as_file("C:/Users/jorge/Desktop/Work/Code/Mine/Python/PythonAutomationFramework/screenshots/"+
                                    screenshotName+".png")
             raise
         except:
@@ -52,7 +52,7 @@ class TestLogin():
                           attachment_type=allure.attachment_type.PNG)
             # to get the file on specific path
             driver.get_screenshot_as_file(
-                "C:/Users/jorge/Desktop/Work/Code/Mine/Python/AutomationFramework_1/screenshots/" +
+                "C:/Users/jorge/Desktop/Work/Code/Mine/Python/PythonAutomationFramework/screenshots/" +
                 screenshotName + ".png")
             #the raise is to show it as a failure
             raise
