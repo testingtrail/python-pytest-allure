@@ -10,17 +10,20 @@ def pytest_addoption(parser):
 @pytest.fixture(scope="class")
 def test_setup(request):
     from selenium import webdriver
+    from webdriver_manager.chrome import ChromeDriverManager
+    from webdriver_manager.firefox import GeckoDriverManager
 
     browser = request.config.getoption("--browser")
     if browser == "chrome":
-        driver = webdriver.Chrome(
-            executable_path= "C:/Users/jorge/Desktop/Work/Code/Mine/Python/PythonAutomationFramework/drivers/chromedriver.exe")
+        #only this command is needed to download or look the chromedriver, no need for .exe
+        driver = webdriver.Chrome(ChromeDriverManager().install())
+        #driver = webdriver.Chrome(executable_path= "C:/Users/jorge/Desktop/Work/Code/Mine/PythonAutomationFramework/drivers/chromedriver.exe")
     elif browser == "firefox":
-        driver = webdriver.Firefox(
-            executable_path="C:/Users/jorge/Desktop/Work/Code/Mine/Python/PythonAutomationFramework/drivers/geckodriver.exe")
+        driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
+    elif browser == "edge":
+        driver = webdriver.Edge(EdgeDriverManager().install())
     else:
-        driver = webdriver.Chrome(
-            executable_path="C:/Users/jorge/Desktop/Work/Code/Mine/Python/PythonAutomationFramework/drivers/chromedriver.exe")
+        driver = webdriver.Chrome(ChromeDriverManager().install())
     driver.implicitly_wait(5)
     driver.maximize_window()
     #next line will sent the driver variable to the class

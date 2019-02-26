@@ -10,6 +10,7 @@ This is a project for a web automation framework using Selenium, Python, allure 
   - pip install pytest-html (for pytest html report)
   - pip install allure-pytest (for allure reporting)
   - pip install moment (for time functions)
+  - pip install webdriver_manager ](for web driver download without need of .exe)
 
 # How to run it
 enter the following command in cmd being located in the folder path
@@ -21,7 +22,9 @@ enter the following command in cmd being located in the folder path
   - --alluredir=<path> To create files needed for allure reports, run this every time your code changes
     or new funtionality exists, in this case "alluredir=reports/allure-reports"
 * To generate allure reports you need to type the following in the project path
-  - allure serve <path where allure files are>, in this case "allure serve alreports/allure-reports"
+  - allure serve <path where allure files are>, in this case "allure serve reports/allure-reports"
+
+* Example: python -m pytest --alluredir=reports/allure-reports --browser=chrome
    
 
 # Technologies used
