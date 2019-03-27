@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../Opta/Locust_Load_Performance/.idea/Locust_Load_Performance.iml" filepath="$PROJECT_DIR$/../../Opta/Locust_Load_Performance/.idea/Locust_Load_Performance.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/PythonAutomationFramework.iml" filepath="$PROJECT_DIR$/.idea/PythonAutomationFramework.iml" />
     </modules>
   </component>

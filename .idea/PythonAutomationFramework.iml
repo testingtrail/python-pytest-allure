@@ -4,6 +4,7 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="jdk" jdkName="Python 3.7" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="Locust_Load_Performance" />
   </component>
   <component name="TestRunnerService">
     <option name="projectConfiguration" value="pytest" />
