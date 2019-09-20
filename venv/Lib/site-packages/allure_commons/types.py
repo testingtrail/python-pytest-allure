@@ -17,7 +17,7 @@ class LinkType(object):
     TEST_CASE = 'test_case'
 
 
-class LabelType(str, Enum):
+class LabelType(str):
     EPIC = 'epic'
     FEATURE = 'feature'
     STORY = 'story'
@@ -28,6 +28,7 @@ class LabelType(str, Enum):
     THREAD = 'thread'
     HOST = 'host'
     TAG = 'tag'
+    ID = 'as_id'
     FRAMEWORK = 'framework'
     LANGUAGE = 'language'
 

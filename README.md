@@ -22,7 +22,8 @@ enter the following command in cmd being located in the folder path
   - --alluredir=<path> To create files needed for allure reports, run this every time your code changes
     or new funtionality exists, in this case "alluredir=reports/allure-reports"
 * To generate allure reports you need to type the following in the project path
-  - allure serve <path where allure files are>, in this case "allure serve reports/allure-reports"
+  - allure serve <path where allure files are>, in this case "allure serve allurereports"
+  - you have to install allure command line for this and add the allure folder installation into system environment variable
 
 * Example: python -m pytest --alluredir=reports/allure-reports --browser=chrome
    

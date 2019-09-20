@@ -2,7 +2,6 @@ import pytest
 import allure_commons
 from allure_commons.utils import escape_non_unicode_symbols
 from allure_commons.utils import now
-from allure_commons.utils import md5
 from allure_commons.utils import uuid4
 from allure_commons.utils import represent
 from allure_commons.utils import platform_label
@@ -22,6 +21,7 @@ from allure_pytest.utils import allure_suite_labels
 from allure_pytest.utils import get_status, get_status_details
 from allure_pytest.utils import get_outcome_status, get_outcome_status_details
 from allure_pytest.utils import get_pytest_report_status
+from allure_commons.utils import md5
 
 
 class AllureListener(object):
@@ -58,29 +58,40 @@ class AllureListener(object):
                                               status=get_status(exc_val),
                                               statusDetails=get_status_details(exc_type, exc_val, exc_tb))
 
+    @pytest.hookimpl(hookwrapper=True, tryfirst=True)
+    def pytest_runtest_protocol(self, item, nextitem):
+        uuid = self._cache.push(item.nodeid)
+        test_result = TestResult(name=item.name, uuid=uuid, start=now(), stop=now())
+        self.allure_logger.schedule_test(uuid, test_result)
+        yield
+
     @pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_setup(self, item):
-        uuid = self._cache.set(item.nodeid)
-        test_result = TestResult(name=item.name, uuid=uuid)
-        self.allure_logger.schedule_test(uuid, test_result)
+        if not self._cache.get(item.nodeid):
+            uuid = self._cache.push(item.nodeid)
+            test_result = TestResult(name=item.name, uuid=uuid, start=now(), stop=now())
+            self.allure_logger.schedule_test(uuid, test_result)
 
         yield
+
         uuid = self._cache.get(item.nodeid)
         test_result = self.allure_logger.get_test(uuid)
         for fixturedef in _test_fixtures(item):
             group_uuid = self._cache.get(fixturedef)
             if not group_uuid:
-                group_uuid = self._cache.set(fixturedef)
+                group_uuid = self._cache.push(fixturedef)
                 group = TestResultContainer(uuid=group_uuid)
                 self.allure_logger.start_group(group_uuid, group)
             self.allure_logger.update_group(group_uuid, children=uuid)
         params = item.callspec.params if hasattr(item, 'callspec') else {}
 
         test_result.name = allure_name(item, params)
+        full_name = allure_full_name(item)
+        test_result.fullName = full_name
+        test_result.historyId = md5(item.nodeid)
+        test_result.testCaseId = md5(full_name)
         test_result.description = allure_description(item)
         test_result.descriptionHtml = allure_description_html(item)
-        test_result.fullName = allure_full_name(item)
-        test_result.historyId = md5(test_result.fullName)
         test_result.parameters.extend(
             [Parameter(name=name, value=represent(value)) for name, value in params.items()])
 
@@ -116,7 +127,7 @@ class AllureListener(object):
         container_uuid = self._cache.get(fixturedef)
 
         if not container_uuid:
-            container_uuid = self._cache.set(fixturedef)
+            container_uuid = self._cache.push(fixturedef)
             container = TestResultContainer(uuid=container_uuid)
             self.allure_logger.start_group(container_uuid, container)
 
@@ -148,7 +159,7 @@ class AllureListener(object):
 
     @pytest.hookimpl(hookwrapper=True)
     def pytest_runtest_makereport(self, item, call):
-        uuid = self._cache.set(item.nodeid)
+        uuid = self._cache.get(item.nodeid)
 
         report = (yield).get_result()
 
@@ -185,12 +196,18 @@ class AllureListener(object):
                 test_result.statusDetails = status_details
 
             if self.config.option.attach_capture:
-                # Capture at teardown contains data from whole test (setup, call, teardown)
-                self.attach_data(report.caplog, "log", AttachmentType.TEXT, None)
-                self.attach_data(report.capstdout, "stdout", AttachmentType.TEXT, None)
-                self.attach_data(report.capstderr, "stderr", AttachmentType.TEXT, None)
+                if report.caplog:
+                    self.attach_data(report.caplog, "log", AttachmentType.TEXT, None)
+                if report.capstdout:
+                    self.attach_data(report.capstdout, "stdout", AttachmentType.TEXT, None)
+                if report.capstderr:
+                    self.attach_data(report.capstderr, "stderr", AttachmentType.TEXT, None)
 
-            uuid = self._cache.pop(item.nodeid)
+    @pytest.hookimpl(hookwrapper=True)
+    def pytest_runtest_logfinish(self, nodeid, location):
+        yield
+        uuid = self._cache.pop(nodeid)
+        if uuid:
             self.allure_logger.close_test(uuid)
 
     @allure_commons.hookimpl
@@ -224,8 +241,12 @@ class AllureListener(object):
         test_result = self.allure_logger.get_test(None)
         if test_result:
             pattern = dict(self.config.option.allure_link_pattern).get(link_type, u'{}')
-            url = pattern.format(url)
-            test_result.links.append(Link(link_type, url, name))
+            link_url = pattern.format(url)
+            new_link = Link(link_type, link_url, link_url if name is None else name)
+            for link in test_result.links:
+                if link.url == new_link.url:
+                    return
+            test_result.links.append(new_link)
 
     @allure_commons.hookimpl
     def add_label(self, label_type, labels):
@@ -242,11 +263,11 @@ class ItemCache(object):
     def get(self, _id):
         return self._items.get(str(_id))
 
-    def set(self, _id):
+    def push(self, _id):
         return self._items.setdefault(str(_id), uuid4())
 
     def pop(self, _id):
-        return self._items.pop(str(_id))
+        return self._items.pop(str(_id), None)
 
 
 def _test_fixtures(item):

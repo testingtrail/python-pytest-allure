@@ -53,16 +53,13 @@ If things do not work right away:
   which should throw a KeyError: 'COMPLINE' (which is properly set by the
   global argcomplete script).
 """
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import os
 import sys
 from glob import glob
+from typing import Optional
 
 
-class FastFilesCompleter(object):
+class FastFilesCompleter:
     "Fast file completer class"
 
     def __init__(self, directories=True):
@@ -95,7 +92,7 @@ if os.environ.get("_ARGCOMPLETE"):
         import argcomplete.completers
     except ImportError:
         sys.exit(-1)
-    filescompleter = FastFilesCompleter()
+    filescompleter = FastFilesCompleter()  # type: Optional[FastFilesCompleter]
 
     def try_argcomplete(parser):
         argcomplete.autocomplete(parser, always_complete_options=False)

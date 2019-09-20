@@ -10,7 +10,7 @@ from _pytest.config import UsageError
 
 
 @attr.s
-class MarkMapping(object):
+class MarkMapping:
     """Provides a local mapping for markers where item access
     resolves to True if the marker is present. """
 
@@ -25,7 +25,7 @@ class MarkMapping(object):
         return name in self.own_mark_names
 
 
-class KeywordMapping(object):
+class KeywordMapping:
     """Provides a local mapping for keywords.
     Given a list of names, map any substring of one of these names to True.
     """
@@ -45,13 +45,14 @@ class KeywordMapping(object):
                 mapped_names.add(item.name)
 
         # Add the names added as extra keywords to current or parent items
-        for name in item.listextrakeywords():
-            mapped_names.add(name)
+        mapped_names.update(item.listextrakeywords())
 
         # Add the names attached to the current function through direct assignment
         if hasattr(item, "function"):
-            for name in item.function.__dict__:
-                mapped_names.add(name)
+            mapped_names.update(item.function.__dict__)
+
+        # add the markers to the keywords as we no longer handle them correctly
+        mapped_names.update(mark.name for mark in item.iter_markers())
 
         return cls(mapped_names)
 

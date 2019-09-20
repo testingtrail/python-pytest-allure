@@ -1,1 +1,11 @@
 .pytest_cache/
+__pycache__
+geckodriver.log
+.idea
+
+test/allure_reports/
+test/.pytest_cache/
+test/geckodriver.log
+test/__pycache__
+test/.pytest_cache
+
